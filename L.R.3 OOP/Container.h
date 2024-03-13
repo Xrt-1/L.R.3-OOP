@@ -42,4 +42,23 @@ public:
 		}
 		size += 1;
 	}
+	void push_forward(T value) {
+		if (firstObj == nullptr) {
+			firstObj = new Node<T> (value);
+		}
+		else {
+			Node<T>* elem = firstObj;
+		}
+	}
+	T& operator [](const int index) {
+		Node<T>* elem = firstObj;
+		int count = 0;
+		while ((elem->NextObj) != nullptr) {
+			if (count == index) {
+				return elem->value;
+			}
+			elem->NextObj;
+			count++;
+		}
+	}
 };

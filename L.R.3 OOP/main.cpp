@@ -13,4 +13,5 @@ int main() {
 	arr[0].Name();*/
 	Container<int> x;
 	x.push_back(11);
+	std:: cout << x[0];
 }
