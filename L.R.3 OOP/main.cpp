@@ -12,6 +12,13 @@ int main() {
 	arr[0] = p1;
 	arr[0].Name();*/
 	Container<int> x;
-	x.push_back(11);
-	std:: cout << x[0];
+	x.push_back(1);
+	x.push_forward(0);
+	x.push_forward(-1);
+	x.push_back(2);
+	x.show_values();
+	x.push_inside(3, 0);
+
+	int c = x[2];
+	x.show_values();
 }
