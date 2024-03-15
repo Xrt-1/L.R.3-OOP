@@ -35,6 +35,7 @@ public:
 			elem = r;
 		}
 	}
+
 	void push_back (T value) {
 		if (firstObj == nullptr) {
 			firstObj = new Node<T> (value);
@@ -98,6 +99,27 @@ public:
 		std::cout << "\n";
 	}
 
+	T& TakeObject(const int index) {
+		Node<T>* elem = firstObj;
+		Node<T>* taked = nullptr;
+		int count = 0;
+		T take;
+		if (index<size && index>=0)
+		{
+			while (elem != nullptr) {
+				if (count == index - 1) {
+					Node<T>* taked = elem->NextObj;
+					take = (elem->NextObj)->value;
+					elem->NextObj = (elem->NextObj)->NextObj;
+					delete taked;
+					size--;
+					return take;
+				}
+				elem = elem->NextObj;
+				count++;
+			}
+		}
+	}
 	T& operator [](const int index) {
 		Node<T>* elem = firstObj;
 		int count = 0;

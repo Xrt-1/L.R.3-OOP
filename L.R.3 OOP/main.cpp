@@ -21,4 +21,7 @@ int main() {
 
 	int c = x[2];
 	x.show_values();
+	std::cout << c;
+	int f = x.TakeObject(2);
+	x.show_values();
 }
