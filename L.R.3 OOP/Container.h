@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-
+#include <type_traits>
 
 template <typename T>
 class Container {
@@ -36,25 +36,25 @@ public:
 		}
 	}
 
-	void push_back (T value) {
+	void push_back(T value) {
 		if (firstObj == nullptr) {
-			firstObj = new Node<T> (value);
+			firstObj = new Node<T>(value);
 		}
 		else {
 			Node<T>* elem = firstObj;
 			while ((elem->NextObj) != nullptr) {
 				elem = (elem->NextObj);
 			}
-			(elem->NextObj)= new Node<T> (value);
+			(elem->NextObj) = new Node<T>(value);
 		}
 		size++;
 	}
 	void push_forward(T value) {
 		if (firstObj == nullptr) {
-			firstObj = new Node<T> (value);
+			firstObj = new Node<T>(value);
 		}
 		else {
-			Node<T>* newFirst = new Node<T> (value);
+			Node<T>* newFirst = new Node<T>(value);
 			newFirst->NextObj = firstObj;
 			firstObj = newFirst;
 		}
@@ -70,7 +70,7 @@ public:
 			elem->NextObj = oldThis;
 			size++;
 		}
-		else if (index<size && index >= 0)
+		else if (index < size && index >= 0)
 		{
 			while (oldThis != nullptr) {
 				if (count == (index - 1)) {
@@ -85,26 +85,29 @@ public:
 			}
 			size++;
 		}
-		
+
 	}
 
 	void show_values() {
 		Node<T>* elem = firstObj;
-		std::cout << "contained elements: ";
-		for (int i = 0; i < size;) {
-			std::cout << elem->value << "; ";
-			elem = elem->NextObj;
-			i += 1;
+		if (std::is_same<T, int>::value or std::is_same<T, char>::value)
+		{
+			std::cout << "contained elements: ";
+			for (int i = 0; i < size;) {
+				std::cout << elem->value << "; ";
+				elem = elem->NextObj;
+				i += 1;
+			}
+			std::cout << "\n";
 		}
-		std::cout << "\n";
 	}
 
-	T& TakeObject(const int index) {
+	T& TakeObject(const int index) {//изымает объект
 		Node<T>* elem = firstObj;
 		Node<T>* taked = nullptr;
 		int count = 0;
 		T take;
-		if (index<size && index>=0)
+		if (index < size && index >= 0)
 		{
 			while (elem != nullptr) {
 				if (count == index - 1) {
@@ -127,8 +130,28 @@ public:
 			if (count == index) {
 				return elem->value;
 			}
-			elem = elem->NextObj; 
+			elem = elem->NextObj;
 			count++;
+		}
+	}
+	void DoSmthExclusive() {//делает то, что есть только в классе-потомке
+
+	}
+
+
+
+	///Проверить работоспособность!!!!!!!!!!!!!
+
+	void DoSmth() {//делает то, что есть во всех потомках класса 
+		Node<T>* elem = firstObj;
+		Object obj = dynamic_cast<Object> (elem);
+		if (obj!=nullptr){
+			while (elem != nullptr)
+			{
+				std::string name = elem.Name();
+				std::cout << name << "\n";
+				elem = elem->NextObj;
+			}
 		}
 	}
 };

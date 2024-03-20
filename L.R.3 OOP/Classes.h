@@ -3,8 +3,11 @@
 
 class Object {
 public:
-	virtual void Name(){
-		std::cout << "Object\n";
+	virtual std::string Name(){
+		return "Object";
+	}
+	virtual bool isA(std::string& who) {
+		return (who == "Object");
 	}
 };
 
@@ -24,8 +27,11 @@ public:
 	int GetInt() {
 		return intgr;
 	}
-	void Name() override {
-		std::cout << "integer\n";
+	std::string Name() override {
+		return "integer";
+	}
+	bool isA(std::string& who) override {
+		return (who == "Integer" || Object::isA(who));
 	}
 };
 
@@ -46,8 +52,11 @@ public:
 		x = (this->x).GetInt();
 		y = (this->y).GetInt();
 	}
-	void Name() override {
-		std::cout << "Point\n";
+	std::string Name() override {
+		return "Point";
+	}
+	bool isA(std::string& who) override {
+		return (who == "Point" || Object::isA(who));
 	}
 };
 
@@ -59,7 +68,10 @@ public:
 		Point p1(P1);
 		Point p2(P2);
 	}
-	void Name() override {
-		std::cout << "line\n";
+	std::string Name() override {
+		return "line";
+	}
+	bool isA(std::string& who) override {
+		return (who == "Line" || Object::isA(who));
 	}
 };
