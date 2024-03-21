@@ -2,15 +2,9 @@
 #include "Container.h"
 
 int main() {
-	/*integer x;
-	integer y(x);
-	x.Name();
-	Point p1;
-	Point p2(p1);
-	Object* arr = new Object[1];
-	arr[0].Name();
-	arr[0] = p1;
-	arr[0].Name();*/
+	setlocale(LC_ALL, "rus");
+	/* проверка контейнера для типа int
+
 	Container<int> x;
 	x.push_back(1);
 	x.push_forward(0);
@@ -23,5 +17,24 @@ int main() {
 	x.show_values();
 	std::cout << c;
 	int f = x.TakeObject(2);
-	x.show_values();
+	x.show_values();*/
+
+	integer x;
+	integer y(1);
+	integer z(2);
+	x.Name();
+	point p1;
+	point p2(p1);
+	Container<integer> cont(x);
+	cont.push_back(y);
+	cont.push_back(z);
+	cont.DoSmthExclusive();
+	
+	/*point x;
+	point y(1, 2);
+	point z(1, 3);
+	Container<point> cont(x);
+	cont.push_back(y);
+	cont.push_back(z);
+	cont.DoSmthExclusive();*/
 }

@@ -3,7 +3,8 @@
 #include <type_traits>
 
 template <typename T>
-class Container {
+class Container 
+{
 private:
 	int size;
 	template <typename T>
@@ -134,22 +135,51 @@ public:
 			count++;
 		}
 	}
-	void DoSmthExclusive() {//делает то, что есть только в классе-потомке
 
+	//не работает, доделать
+	void DoSmthExclusive() 
+	{//делает то, что есть только в классе-потомке
+		Node<T>* elem = firstObj;
+		int count = 0;
+		if (dynamic_cast<point*>(&(elem->value)) != nullptr) {
+			int x = NULL, y = NULL;
+			while (elem != nullptr) {
+				point* obj = dynamic_cast<point*>(&(elem->value));
+				obj->GetCoords(x, y);
+				std::cout << " оординаты точки под номером " << count << ": x = " << x << "; y = " << y << "\n";
+				count++;
+				elem = elem->NextObj;
+		}
+		//if ((elem->value).isA("point")) {
+		//	int x = NULL, y = NULL;
+		//	point* obj = new point((elem->value)); эта строка нужна, чтобы не вызывать GetCoords у тех классов, которые не содержат этот метод.
+		//	while (elem != nullptr) {
+		//		obj.GetCoords(x, y);
+		//		std::cout << " оординаты точки под номером " << count << ": x = " << x << "; y = " << y << "\n";
+		//		count++;
+		//		elem = elem->NextObj;
+		//	}
+		//}
+		//else if ((elem->value).isA("integer")) {
+		//	int number;
+		//	while (elem != nullptr) {
+		//		//number = (elem->value).GetInt();
+		//		integer* obj = new integer(elem->value);
+		//		std::cout << "«начение элемента под номером " << count << " равно " << obj.GetInt() << "\n";
+		//		count++;
+		//		elem = elem->NextObj;
+		//	}
+		}
 	}
 
-
-
-	///ѕроверить работоспособность!!!!!!!!!!!!!
-
+		///ѕроверить работоспособность!!!!!!!!!!!!!
 	void DoSmth() {//делает то, что есть во всех потомках класса 
 		Node<T>* elem = firstObj;
-		Object obj = dynamic_cast<Object> (elem);
-		if (obj!=nullptr){
+		if (dynamic_cast<Object*> (&(elem->value)) != nullptr) {
 			while (elem != nullptr)
 			{
-				std::string name = elem.Name();
-				std::cout << name << "\n";
+				std::string name = (elem->value).Name();
+				std::cout << "Ќазвание класса: " << name << "\n";
 				elem = elem->NextObj;
 			}
 		}

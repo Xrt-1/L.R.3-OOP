@@ -6,7 +6,7 @@ public:
 	virtual std::string Name(){
 		return "Object";
 	}
-	virtual bool isA(std::string& who) {
+	virtual bool isA(std::string who) {
 		return (who == "Object");
 	}
 };
@@ -24,54 +24,54 @@ public:
 	void SetInt(int a) {
 		intgr = a;
 	}
-	int GetInt() {
+	const int GetInt() {
 		return intgr;
 	}
 	std::string Name() override {
 		return "integer";
 	}
-	bool isA(std::string& who) override {
-		return (who == "Integer" || Object::isA(who));
+	bool isA(std::string who) override {
+		return (who == "integer");
 	}
 };
 
-class Point : public integer {
+class point : public integer {
 protected:
 	integer x, y;
 public:
-	Point() {
-		x.SetInt(0);
-		y.SetInt(0);
+	point() {
+		(this->x).SetInt(0);
+		(this->y).SetInt(0);
 	}
-	Point(int x, int y) {
+	point(int x, int y) {
 		(this->x).SetInt(x);
 		(this->y).SetInt(y);
 	}
 	
-	void GetCoords(int x, int y) {
+	void GetCoords(int& x, int& y) {
 		x = (this->x).GetInt();
 		y = (this->y).GetInt();
 	}
 	std::string Name() override {
-		return "Point";
+		return "point";
 	}
-	bool isA(std::string& who) override {
-		return (who == "Point" || Object::isA(who));
+	bool isA(std::string who) override {
+		return (who == "point");
 	}
 };
 
 class line: public Object {
 protected:
-	Point p1, p2;
+	point p1, p2;
 public:
-	line(Point P1, Point P2) {
-		Point p1(P1);
-		Point p2(P2);
+	line(point P1, point P2) {
+		point p1(P1);
+		point p2(P2);
 	}
 	std::string Name() override {
 		return "line";
 	}
-	bool isA(std::string& who) override {
+	bool isA(std::string who) override {
 		return (who == "Line" || Object::isA(who));
 	}
 };
