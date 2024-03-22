@@ -19,7 +19,7 @@ int main() {
 	int f = x.TakeObject(2);
 	x.show_values();*/
 
-	integer x;
+	/*integer x;
 	integer y(1);
 	integer z(2);
 	x.Name();
@@ -28,7 +28,7 @@ int main() {
 	Container<integer> cont(x);
 	cont.push_back(y);
 	cont.push_back(z);
-	cont.DoSmthExclusive();
+	cont.DoSmthExclusive();*/
 	
 	/*point x;
 	point y(1, 2);
@@ -36,5 +36,13 @@ int main() {
 	Container<point> cont(x);
 	cont.push_back(y);
 	cont.push_back(z);
-	cont.DoSmthExclusive();*/
+	cont.DoSmthExclusive();
+	*/
+	line x(2,2,2,2);
+	line y(1, 2,3,4);
+	line z(1, 1, 1, 1);
+	Container<line> cx(x);
+	cx.push_back(y);
+	cx.push_back(z);
+	cx.DoSmthExclusive();
 }

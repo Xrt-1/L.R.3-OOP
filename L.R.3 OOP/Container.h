@@ -136,39 +136,38 @@ public:
 		}
 	}
 
-	//не работает, доделать
-	void DoSmthExclusive() 
-	{//делает то, что есть только в классе-потомке
+	void DoSmthExclusive()
+	{
 		Node<T>* elem = firstObj;
 		int count = 0;
-		if (dynamic_cast<point*>(&(elem->value)) != nullptr) {
+		if ((elem->value).isA("point")) {
 			int x = NULL, y = NULL;
 			while (elem != nullptr) {
-				point* obj = dynamic_cast<point*>(&(elem->value));
+				point* obj = dynamic_cast<point*>(&(elem->value)); //эта строка нужна, чтобы не вызывать GetCoords у тех классов, которые не содержат этот метод.
 				obj->GetCoords(x, y);
 				std::cout << " оординаты точки под номером " << count << ": x = " << x << "; y = " << y << "\n";
 				count++;
 				elem = elem->NextObj;
+			}
 		}
-		//if ((elem->value).isA("point")) {
-		//	int x = NULL, y = NULL;
-		//	point* obj = new point((elem->value)); эта строка нужна, чтобы не вызывать GetCoords у тех классов, которые не содержат этот метод.
-		//	while (elem != nullptr) {
-		//		obj.GetCoords(x, y);
-		//		std::cout << " оординаты точки под номером " << count << ": x = " << x << "; y = " << y << "\n";
-		//		count++;
-		//		elem = elem->NextObj;
-		//	}
-		//}
-		//else if ((elem->value).isA("integer")) {
-		//	int number;
-		//	while (elem != nullptr) {
-		//		//number = (elem->value).GetInt();
-		//		integer* obj = new integer(elem->value);
-		//		std::cout << "«начение элемента под номером " << count << " равно " << obj.GetInt() << "\n";
-		//		count++;
-		//		elem = elem->NextObj;
-		//	}
+		else if ((elem->value).isA("integer")) {
+			while (elem != nullptr) {
+				integer* obj = dynamic_cast<integer*>(&(elem->value));
+				std::cout << "«начение элемента под номером " << count << " равно " << obj->GetInt() << "\n";
+				count++;
+				elem = elem->NextObj;
+			}
+		}
+		///¬езде выдает нули, разобратьс€
+		else if ((elem->value).isA("line")) {
+			int x, y, x1, y1;
+			while (elem != nullptr) {
+				line* obj = dynamic_cast<line*>(&(elem->value));
+				obj->GetCoords(x, y, x1, y1);
+				std::cout << "ѕерва€ точка отрезка под номером" << count << " имеет координаты(" << x << ";" << y << ")  ¬тора€ точка этого отрезка имеет координаты(" << x1 << "; " << y1 << ")\n";
+				count++;
+				elem = elem->NextObj;
+			}
 		}
 	}
 
