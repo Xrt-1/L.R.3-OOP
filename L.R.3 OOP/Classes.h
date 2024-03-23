@@ -47,10 +47,13 @@ public:
 		(this->x).SetInt(x);
 		(this->y).SetInt(y);
 	}
-	
 	void GetCoords(int& x, int& y) {
 		x = (this->x).GetInt();
 		y = (this->y).GetInt();
+	}
+	void SetCoords(const int x, const int y) {
+		(this->x) = x;
+		(this->y) = y;
 	}
 	std::string Name() override {
 		return "point";
@@ -65,16 +68,16 @@ protected:
 	point p1, p2;
 public:
 	line() {
-		point p1(0,0);
-		point p2(0, 0);
+		p1.SetCoords(0,0);
+		p2.SetCoords(0,0);
 	}
 	line(point P1, point P2) {
-		point p1(P1);
-		point p2(P2);
+		p1 = P1;
+		p2 = P2;
 	}
 	line(int x, int y, int x2, int y2) {
-		point p1(x, y);
-		point p2(x2, y2);
+		p1.SetCoords(x, y);
+		p2.SetCoords(x2, y2);
 	}
 	void GetCoords(int& x, int& y, int& x2, int& y2) {
 		p1.GetCoords(x, y);

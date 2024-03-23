@@ -36,7 +36,9 @@ public:
 			elem = r;
 		}
 	}
-
+	int GetSize() {
+		return size;
+	}
 	void push_back(T value) {
 		if (firstObj == nullptr) {
 			firstObj = new Node<T>(value);
@@ -171,13 +173,18 @@ public:
 		}
 	}
 
-		///Проверить работоспособность!!!!!!!!!!!!!
-	void DoSmth() {//делает то, что есть во всех потомках класса 
+	void DoSmth() {//делает то, что есть во всех потомках класса
+		Object* obj = NULL;
 		Node<T>* elem = firstObj;
-		if (dynamic_cast<Object*> (&(elem->value)) != nullptr) {
+		if (dynamic_cast<Object*> (&(elem->value)) != nullptr) 
+		{
+			if (dynamic_cast<point*> (&(elem->value)) != nullptr) obj = dynamic_cast<point*> (&(elem->value));
+			else if (dynamic_cast<line*> (&(elem->value)) != nullptr) obj = dynamic_cast<line*> (&(elem->value));
+			else if (dynamic_cast<integer*> (&(elem->value)) != nullptr) obj = dynamic_cast<integer*> (&(elem->value));
+			else if (dynamic_cast<Object*> (&(elem->value)) != nullptr) obj = dynamic_cast<Object*> (&(elem->value));
 			while (elem != nullptr)
 			{
-				std::string name = (elem->value).Name();
+				std::string name = obj->Name();
 				std::cout << "Название класса: " << name << "\n";
 				elem = elem->NextObj;
 			}
