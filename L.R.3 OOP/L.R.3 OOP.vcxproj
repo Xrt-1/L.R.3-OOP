@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="Classes.h" />
     <ClInclude Include="Container.h" />
+    <ClInclude Include="ContainerNoTemplate.h" />
     <ClInclude Include="Function.h" />
   </ItemGroup>
   <ItemGroup>

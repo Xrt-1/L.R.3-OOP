@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include <type_traits>
 
 template <typename T>
 class Container 
@@ -12,7 +11,7 @@ private:
 	public:
 		T value;
 		Node<T>* NextObj;
-		Node<T>(T val = T(), Node* next = nullptr) {
+		Node<T>(const T val = T(), Node* next = nullptr) {
 			value = val;
 			NextObj = next;
 		}
@@ -41,11 +40,11 @@ public:
 	}
 	void push_back(T value) {
 		if (firstObj == nullptr) {
-			firstObj = new Node<T>(value);
+			firstObj = new Node<T> (value);
 		}
 		else {
 			Node<T>* elem = firstObj;
-			while ((elem->NextObj) != nullptr) {
+			while (((elem->NextObj) != nullptr) && (elem != nullptr)) {
 				elem = (elem->NextObj);
 			}
 			(elem->NextObj) = new Node<T>(value);
@@ -63,32 +62,54 @@ public:
 		}
 		size++;
 	}
-	void push_inside(T value, int index) {  //вставляет элемент на индекс index, передвигая тот, что был там
-		Node<T>* elem = new Node<T>(value);
-		Node<T>* oldThis = firstObj;
+	void push_inside(const T value,const int index) {  //вставляет элемент на индекс index, передвигая тот, что был там
+		Node<T>* r = firstObj;
 		Node<T>* prev = nullptr;
+		Node<T>* next = nullptr;
 		int count = 0;
 		if (index == 0) {
-			firstObj = elem;
-			elem->NextObj = oldThis;
+			firstObj = new Node<T>(value);
+			firstObj->NextObj = r;
 			size++;
 		}
 		else if (index < size && index >= 0)
 		{
-			while (oldThis != nullptr) {
+			while (r != nullptr) {
 				if (count == (index - 1)) {
-					prev = oldThis;
+					prev = r;
+					next = r->NextObj;
+					r = new Node<T>(value, next);
+					prev->NextObj = r;
 				}
-				else if (count == index) {
-					prev->NextObj = elem;
-					elem->NextObj = oldThis;
-				}
-				oldThis = oldThis->NextObj;
+				r = r->NextObj;
 				count++;
 			}
 			size++;
 		}
+	}
+	void pop_front() {
+		Node<T> newFirst = firstObj->NextObj;
+		delete firstObj;
+		firstObj = newFirst;
 
+	}
+	void remove(int index) {
+		int c = 0;
+		Node<T>* elem = firstObj, prev = nullptr, next = nullptr;
+		if (index == 0) {
+			pop_front();
+		}
+		else {
+			while (elem != nullptr) {
+				if (c == index - 1) {
+					prev = elem;
+					next = (prev->NextObj)->NextObj;
+					delete elem;
+					prev->NextObj = next;
+					size--;
+				}
+			}
+		}
 	}
 
 	void show_values() {
