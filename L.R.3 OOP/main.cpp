@@ -10,10 +10,12 @@ int main() {
 	line l1(p1, p2);
 	cont.push_back(b);
 	cont.push_forward(a);
-	cont.push_inside(p1, 2);
+	cont.push_inside(p1, 2);//-
 	cont.push_back(p2);
 	cont.push_back(l1);
-
+	cont.DoSmth();
+	printf("--------------------------------\n");
+	cont.DoSmthExclusive();
 	///Работает корректно:
 	/*Object** arr = new Object * [3];
 	arr[0] = &a;

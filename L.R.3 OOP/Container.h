@@ -9,10 +9,10 @@ private:
 	template <typename T>
 	class Node {
 	public:
-		T value;
+		T* value;
 		Node<T>* NextObj;
-		Node<T>(const T val = T(), Node* next = nullptr) {
-			value = val;
+		Node<T>(T& val = nullptr, Node* next = nullptr) {
+			value = &val;
 			NextObj = next;
 		}
 	};
@@ -23,7 +23,7 @@ public:
 		size = 0;
 	}
 	Container<T>(T object) {
-		firstObj = new Node<T>(object);
+		firstObj = new Node<T>(object) ;
 		size = 1;
 	}
 	~Container<T>() {
@@ -38,9 +38,9 @@ public:
 	int GetSize() {
 		return size;
 	}
-	void push_back(T value) {
+	void push_back(T& value) {
 		if (firstObj == nullptr) {
-			firstObj = new Node<T> (value);
+			firstObj = new Node<T>(value);
 		}
 		else {
 			Node<T>* elem = firstObj;
@@ -51,18 +51,18 @@ public:
 		}
 		size++;
 	}
-	void push_forward(T value) {
+	void push_forward(T& value) {
 		if (firstObj == nullptr) {
 			firstObj = new Node<T>(value);
 		}
 		else {
-			Node<T>* newFirst = new Node<T>(value);
-			newFirst->NextObj = firstObj;
-			firstObj = newFirst;
+			Node<T>* oldFirst = firstObj;
+			firstObj = new Node<T>(value);
+			firstObj->NextObj = oldFirst;
 		}
 		size++;
 	}
-	void push_inside(const T value,const int index) {  //вставл€ет элемент на индекс index, передвига€ тот, что был там
+	void push_inside(T& value,const int index) {  //вставл€ет элемент на индекс index, передвига€ тот, что был там
 		Node<T>* r = firstObj;
 		Node<T>* prev = nullptr;
 		Node<T>* next = nullptr;
@@ -72,14 +72,12 @@ public:
 			firstObj->NextObj = r;
 			size++;
 		}
-		else if (index < size && index >= 0)
+		else if (index <= size && index >= 0)
 		{
 			while (r != nullptr) {
 				if (count == (index - 1)) {
-					prev = r;
 					next = r->NextObj;
-					r = new Node<T>(value, next);
-					prev->NextObj = r;
+					r->NextObj = new Node<T>(value, next);
 				}
 				r = r->NextObj;
 				count++;
@@ -87,6 +85,7 @@ public:
 			size++;
 		}
 	}
+
 	void pop_front() {
 		Node<T> newFirst = firstObj->NextObj;
 		delete firstObj;
@@ -130,7 +129,7 @@ public:
 		Node<T>* elem = firstObj;
 		Node<T>* taked = nullptr;
 		int count = 0;
-		T take;
+		T* take;
 		if (index < size && index >= 0)
 		{
 			while (elem != nullptr) {
@@ -140,7 +139,7 @@ public:
 					elem->NextObj = (elem->NextObj)->NextObj;
 					delete taked;
 					size--;
-					return take;
+					return *take;
 				}
 				elem = elem->NextObj;
 				count++;
@@ -152,7 +151,7 @@ public:
 		int count = 0;
 		while (elem != nullptr) {
 			if (count == index) {
-				return elem->value;
+				return *(elem->value);
 			}
 			elem = elem->NextObj;
 			count++;
@@ -163,48 +162,43 @@ public:
 	{
 		Node<T>* elem = firstObj;
 		int count = 0;
-		if ((elem->value).isA("point")) {
-			int x = NULL, y = NULL;
-			while (elem != nullptr) {
-				point* obj = dynamic_cast<point*>(&(elem->value)); //эта строка нужна, чтобы не вызывать GetCoords у тех классов, которые не содержат этот метод.
+		while (elem != nullptr) {
+			if ((elem->value)->isA("point")) {
+				int x, y;
+				point* obj = static_cast<point*> (elem->value);
 				obj->GetCoords(x, y);
 				std::cout << " оординаты точки под номером " << count << ": x = " << x << "; y = " << y << "\n";
 				count++;
-				elem = elem->NextObj;
 			}
-		}
-		else if ((elem->value).isA("integer")) {
-			while (elem != nullptr) {
-				integer* obj = dynamic_cast<integer*>(&(elem->value));
+			else if ((elem->value)->isA("integer")) {
+				integer* obj = static_cast<integer*>(elem->value);
 				std::cout << "«начение элемента под номером " << count << " равно " << obj->GetInt() << "\n";
 				count++;
-				elem = elem->NextObj;
+				
 			}
-		}
-		///¬езде выдает нули, разобратьс€
-		else if ((elem->value).isA("line")) {
-			int x, y, x1, y1;
-			while (elem != nullptr) {
-				line* obj = dynamic_cast<line*>(&(elem->value));
+			else if ((elem->value)->isA("line")) {
+				int x, y, x1, y1;
+				line* obj = dynamic_cast<line*>(elem->value);
 				obj->GetCoords(x, y, x1, y1);
-				std::cout << "ѕерва€ точка отрезка под номером" << count << " имеет координаты(" << x << ";" << y << ")  ¬тора€ точка этого отрезка имеет координаты(" << x1 << "; " << y1 << ")\n";
+				std::cout << "ѕерва€ точка отрезка под номером " << count << " имеет координаты(" << x << ";" << y << ");  ¬тора€ точка этого отрезка имеет координаты(" << x1 << "; " << y1 << ")\n";
 				count++;
-				elem = elem->NextObj;
 			}
+			elem = elem->NextObj;
 		}
+	
 	}
 
 	void DoSmth() {//делает то, что есть во всех потомках класса
 		Object* obj = NULL;
 		Node<T>* elem = firstObj;
-		if (dynamic_cast<Object*> (&(elem->value)) != nullptr) 
+		if (dynamic_cast<Object*> (elem->value) != nullptr) 
 		{
-			if (dynamic_cast<point*> (&(elem->value)) != nullptr) obj = dynamic_cast<point*> (&(elem->value));
-			else if (dynamic_cast<line*> (&(elem->value)) != nullptr) obj = dynamic_cast<line*> (&(elem->value));
-			else if (dynamic_cast<integer*> (&(elem->value)) != nullptr) obj = dynamic_cast<integer*> (&(elem->value));
-			else if (dynamic_cast<Object*> (&(elem->value)) != nullptr) obj = dynamic_cast<Object*> (&(elem->value));
 			while (elem != nullptr)
 			{
+				if (dynamic_cast<point*> (elem->value) != nullptr) obj = dynamic_cast<point*> (elem->value);
+				else if (dynamic_cast<line*> (elem->value) != nullptr) obj = dynamic_cast<line*> (elem->value);
+				else if (dynamic_cast<integer*> (elem->value) != nullptr) obj = dynamic_cast<integer*> (elem->value);
+				else if (dynamic_cast<Object*> (elem->value) != nullptr) obj = dynamic_cast<Object*> (elem->value);
 				std::string name = obj->Name();
 				std::cout << "Ќазвание класса: " << name << "\n";
 				elem = elem->NextObj;
