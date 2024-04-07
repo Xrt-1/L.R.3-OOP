@@ -3,6 +3,7 @@
 int main() {
 	setlocale(LC_ALL, "rus");
 	Container<Object> cont;
+	randomFill(100, cont);
 	randomActions(100, cont);
 	cont.clear();
 	//randomActions(1000, cont);

@@ -11,18 +11,19 @@ void randomFill(int count, Container<Object>& cont) {
 		if (r % 2 == 0) {
 			int r1 = rand();
 			if (r1 % 2 == 0) {
-				integer a = integer(i);
-				cont.push_back(a);
+				integer* a = new integer(i);
+				cont.push_back(*a);
 			}
 			else {
-				point a = point(i, i+1);
-				cont.push_back(a);
+				point* a = new point(i, i+1);
+				cont.push_back(*a);
 			}
 		}
 		else {
-			point p1(i, i+1), p2(i+2, i+3);
-			line a = line(p1, p2);
-			cont.push_back(a);
+			point* p1 = new point(i, i + 1);
+			point* p2 = new point(i+2, i+3);
+			line* a = new line(*p1, *p2);
+			cont.push_back(*a);
 		}
 	}
 }
