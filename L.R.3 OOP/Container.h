@@ -27,12 +27,20 @@ public:
 		size = 1;
 	}
 	~Container<T>() {
-		Node<T>* elem = firstObj;
-		Node<T>* r;
-		while (elem != nullptr) {
-			r = elem->NextObj;
-			delete elem;
-			elem = r;
+		clear();
+	}
+	void clear() {
+		if (firstObj != nullptr) {
+			Node<T>* elem = firstObj;
+			Node<T>* r;
+			while (elem != nullptr) {
+				r = elem->NextObj;
+				delete elem;
+				elem = r;
+			}
+			firstObj->NextObj = nullptr;
+			firstObj = nullptr;
+			size = 0;
 		}
 	}
 	int GetSize() {
@@ -87,31 +95,32 @@ public:
 	}
 
 	void pop_front() {
-		Node<T> newFirst = firstObj->NextObj;
+		Node<T>* newFirst = firstObj->NextObj;
 		delete firstObj;
 		firstObj = newFirst;
-
+		size--;
 	}
 	void remove(int index) {
 		int c = 0;
-		Node<T>* elem = firstObj, prev = nullptr, next = nullptr;
+		Node<T>* prev = firstObj;
 		if (index == 0) {
 			pop_front();
 		}
 		else {
-			while (elem != nullptr) {
+			while (prev != nullptr) {
 				if (c == index - 1) {
-					prev = elem;
-					next = (prev->NextObj)->NextObj;
-					delete elem;
+					Node<T>* next = (prev->NextObj)->NextObj;
+					delete (prev->NextObj);
 					prev->NextObj = next;
 					size--;
 				}
+				c++;
+				prev = prev->NextObj;
 			}
 		}
 	}
 
-	void show_values() {
+	void show_values_for_int() {
 		Node<T>* elem = firstObj;
 		if (std::is_same<T, int>::value or std::is_same<T, char>::value)
 		{
@@ -178,7 +187,7 @@ public:
 			}
 			else if ((elem->value)->isA("line")) {
 				int x, y, x1, y1;
-				line* obj = dynamic_cast<line*>(elem->value);
+				line* obj = static_cast<line*>(elem->value);
 				obj->GetCoords(x, y, x1, y1);
 				std::cout << "ѕерва€ точка отрезка под номером " << count << " имеет координаты(" << x << ";" << y << ");  ¬тора€ точка этого отрезка имеет координаты(" << x1 << "; " << y1 << ")\n";
 				count++;
@@ -189,17 +198,12 @@ public:
 	}
 
 	void DoSmth() {//делает то, что есть во всех потомках класса
-		Object* obj = NULL;
 		Node<T>* elem = firstObj;
 		if (dynamic_cast<Object*> (elem->value) != nullptr) 
 		{
 			while (elem != nullptr)
 			{
-				if (dynamic_cast<point*> (elem->value) != nullptr) obj = dynamic_cast<point*> (elem->value);
-				else if (dynamic_cast<line*> (elem->value) != nullptr) obj = dynamic_cast<line*> (elem->value);
-				else if (dynamic_cast<integer*> (elem->value) != nullptr) obj = dynamic_cast<integer*> (elem->value);
-				else if (dynamic_cast<Object*> (elem->value) != nullptr) obj = dynamic_cast<Object*> (elem->value);
-				std::string name = obj->Name();
+				std::string name = (elem->value)->Name();
 				std::cout << "Ќазвание класса: " << name << "\n";
 				elem = elem->NextObj;
 			}
